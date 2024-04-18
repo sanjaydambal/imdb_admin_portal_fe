@@ -12,8 +12,9 @@ fetchMovies()
 },[])
   const fetchMovies = async() => {
     try{
-      const response = axios.get("http://localhost:4000/api/movies");
-      setMovies(response.data.movies)
+      const response = await axios.get("http://localhost:4000/api/movies");
+      console.log(response)
+      setMovies(response.data.movie)
 
     }catch(err){
 console.error('error retrieving movies:',err)
@@ -26,13 +27,14 @@ await fetchMovies()
     <div className="App">
       <MovieForm onAdd={handleAddMovie}/>
       {
-        movies.map((movie)=>(
-          <div key={movies.id}>
-<h2>{movie.title}</h2>
-<p>{movie.description}</p>
-            </div>
-        ))
-      }
+  movies && movies.map((movie) => (
+    <div key={movie.id}>
+      <h2>{movie.title}</h2>
+      <p>{movie.description}</p>
+    </div>
+  ))
+}
+
     </div>
   );
 }
