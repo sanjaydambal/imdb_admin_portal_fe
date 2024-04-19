@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-const MovieForm = ({ onAdd }) => {
+const UpdateMovie = ({ onUpdate, onCancel, movie }) => {
     const [formData, setFormData] = useState({
         title: "",
         description: "",
@@ -9,6 +9,18 @@ const MovieForm = ({ onAdd }) => {
         genre: "",
         poster_url: ""
     });
+
+    useEffect(() => {
+        if (movie) {
+            setFormData({
+                title: movie.title || "",
+                description: movie.description || "",
+                release_date: movie.release_date || "",
+                genre: movie.genre || "",
+                poster_url: movie.poster_url || ""
+            });
+        }
+    }, [movie]);
 
     const handleChange = (e) => {
         setFormData({
@@ -20,8 +32,12 @@ const MovieForm = ({ onAdd }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.post("http://localhost:4000/api/movies", formData);
-            onAdd();
+            if (movie) {
+                await axios.put(`http://localhost:4000/api/movies/${movie.id}`, formData);
+            } else {
+                await axios.post('http://localhost:4000/api/movies', formData);
+            }
+            onUpdate();
             setFormData({
                 title: "",
                 description: "",
@@ -29,9 +45,20 @@ const MovieForm = ({ onAdd }) => {
                 genre: "",
                 poster_url: ""
             });
-        } catch (error) {
-            console.error("error in adding movies", error);
+        } catch (err) {
+            console.error("Error in adding/updating movie:", err);
         }
+    };
+
+    const handleCancel = () => {
+        onCancel();
+        setFormData({
+            title: "",
+            description: "",
+            release_date: "",
+            genre: "",
+            poster_url: ""
+        });
     };
 
     return (
@@ -63,13 +90,17 @@ const MovieForm = ({ onAdd }) => {
                         <input type="url" className="form-control" name="poster_url" value={formData.poster_url} onChange={handleChange} required />
                     </div>
                     <div className=" mb-3">
-                        <button type="submit" className="btn btn-primary">Add Movies</button>
+                        <button type="submit" className="btn btn-primary" onClick={handleCancel}>Cancel</button>
+
                     </div>
-                
+                  <div className=" mb-3">
+                        <button type="submit" className="btn btn-primary" >{movie?"Update Movie" : "Add Movie"}</button>
+                        
+                    </div>
                     </div>
             </form>
         </div>
     );
 };
 
-export default MovieForm;
+export default UpdateMovie;

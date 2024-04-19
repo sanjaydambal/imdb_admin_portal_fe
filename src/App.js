@@ -1,10 +1,11 @@
 import './App.css';
-import MovieForm from './components/MovieForm';
+// import MovieForm from './components/MovieForm';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-
+import UpdateMovie from './components/UpdateMovie';
 function App() {
     const [movies, setMovies] = useState([]);
+    const [updateMovies,setUpdateMovies] = useState(null)
 
     useEffect(() => {
         fetchMovies();
@@ -19,14 +20,19 @@ function App() {
         }
     };
 
-    const handleAddMovie = async () => {
+    const handleAddUpdateMovie = async () => {
+        setUpdateMovies(null)
         await fetchMovies();
+
     };
+    const handleCancel = () => {
+        setUpdateMovies(null)
+    }
 
     return (
         <div className="App">
             <div className="container mt-5">
-                <MovieForm onAdd={handleAddMovie} />
+                <UpdateMovie onUpdate={handleAddUpdateMovie} onCancel= {handleCancel} movie={updateMovies} />
                 <div className="row mt-3">
                     {movies.map((movie) => (
                         <div key={movie.id} className="col-md-4 mb-4">
