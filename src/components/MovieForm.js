@@ -61,6 +61,7 @@ const MovieForm = ({ onAdd }) => {
                     <div className=" mb-3">
                         <label htmlFor="poster" className="form-label">Poster Url</label>
                         <input type="url" className="form-control" name="poster_url" value={formData.poster_url} onChange={handleChange} required />
+                    
                     </div>
                     <div className=" mb-3">
                         <button type="submit" className="btn btn-primary">Add Movies</button>

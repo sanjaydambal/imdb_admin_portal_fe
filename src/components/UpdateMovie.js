@@ -9,7 +9,8 @@ const UpdateMovie = ({ onUpdate, onCancel, movie }) => {
         genre: "",
         poster_url: ""
     });
-
+    const apiURL = process.env.REACT_APP_API_BASE_URL || "http://localhost:4000";
+    
     useEffect(() => {
         if (movie) {
             setFormData({
@@ -33,9 +34,9 @@ const UpdateMovie = ({ onUpdate, onCancel, movie }) => {
         e.preventDefault();
         try {
             if (movie) {
-                await axios.put(`http://localhost:4000/api/movies/${movie.id}`, formData);
+                await axios.put(`${apiURL}/api/movies/${movie.id}`, formData);
             } else {
-                await axios.post('http://localhost:4000/api/movies', formData);
+                await axios.post(`${apiURL}/api/movies`, formData);
             }
             onUpdate();
             setFormData({
@@ -65,39 +66,34 @@ const UpdateMovie = ({ onUpdate, onCancel, movie }) => {
         <div className="container col-sm-6 col-lg-3">
             <h2 className="text-center">Add Movie</h2>
             <form onSubmit={handleSubmit}>
-
-                <div className="row ">
-                    <div className=" mb-3">
+                <div className="row">
+                    <div className="mb-3">
                         <label htmlFor="title" className="form-label">Title</label>
                         <input type="text" className="form-control" name="title" value={formData.title} onChange={handleChange} required />
                     </div>
-                    <div className=" mb-3">
+                    <div className="mb-3">
                         <label htmlFor="description" className="form-label">Description</label>
                         <textarea type="description" className="form-control" name="description" value={formData.description} onChange={handleChange} required />
                     </div>
-                    <div className=" mb-3">
+                    <div className="mb-3">
                         <label htmlFor="release_date" className="form-label">Release Date</label>
                         <input type="date" className="form-control" name="release_date" value={formData.release_date} onChange={handleChange} required />
                     </div>
-                    <div className=" mb-3">
+                    <div className="mb-3">
                         <label htmlFor="genre" className="form-label">Genre</label>
                         <input type="text" className="form-control" name="genre" value={formData.genre} onChange={handleChange} required />
                     </div>
-               
-   
-                    <div className=" mb-3">
+                    <div className="mb-3">
                         <label htmlFor="poster" className="form-label">Poster Url</label>
                         <input type="url" className="form-control" name="poster_url" value={formData.poster_url} onChange={handleChange} required />
                     </div>
-                    <div className=" mb-3">
-                        <button type="submit" className="btn btn-primary" onClick={handleCancel}>Cancel</button>
-
+                    <div className="mb-3">
+                        <button type="button" className="btn btn-primary" onClick={handleCancel}>Cancel</button>
                     </div>
-                  <div className=" mb-3">
-                        <button type="submit" className="btn btn-primary" >{movie?"Update Movie" : "Add Movie"}</button>
-                        
+                    <div className="mb-3">
+                        <button type="submit" className="btn btn-primary">{movie ? "Update Movie" : "Add Movie"}</button>
                     </div>
-                    </div>
+                </div>
             </form>
         </div>
     );
