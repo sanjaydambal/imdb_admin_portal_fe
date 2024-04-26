@@ -9,7 +9,7 @@ const UpdateMovie = ({ onUpdate, onCancel, movie }) => {
         genre: "",
         poster_url: ""
     });
-    const apiURL = process.env.REACT_APP_API_BASE_URL || "http://localhost:4000";
+    const apiURL = process.env.REACT_APP_API_BASE_URL || "https://imdb-admin-portal-be.onrender.com";
     
     useEffect(() => {
         if (movie) {

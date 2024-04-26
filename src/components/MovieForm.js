@@ -20,7 +20,7 @@ const MovieForm = ({ onAdd }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.post("http://localhost:4000/api/movies", formData);
+            await axios.post("https://imdb-admin-portal-be.onrender.com/api/movies", formData);
             onAdd();
             setFormData({
                 title: "",
