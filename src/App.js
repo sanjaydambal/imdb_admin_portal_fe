@@ -9,13 +9,14 @@ function App() {
     const [updateMovies,setUpdateMovies] = useState(null)
     const [showConfirmationModal, setShowConfirmationModal] = useState(false);
     const [movieToDelete, setMovieToDelete] = useState(null);
+    const apiURL = process.env.REACT_APP_API_BASE_URL || "http://localhost:4000";
     useEffect(() => {
         fetchMovies();
     }, []);
 
     const fetchMovies = async () => {
         try {
-            const response = await axios.get("http://localhost:4000/api/movies");
+            const response = await axios.get(`${apiURL}/api/movies`);
             setMovies(response.data.movie);
         } catch (err) {
             console.error('Error retrieving movies:', err);
@@ -44,7 +45,7 @@ function App() {
 
     const confirmDelete = async () => {
         try {
-            await axios.delete(`http://localhost:4000/api/movies/${movieToDelete}`);
+            await axios.delete(`${apiURL}/api/movies/${movieToDelete}`);
             await fetchMovies();
         } catch (error) {
             console.error('Error deleting movie:', error);
@@ -61,7 +62,8 @@ function App() {
                     {movies.map((movie) => (
                         <div key={movie.id} className="col-md-4 mb-4">
                             <div className="card">
-                                <img src={movie.poster_url} className="card-img-top" alt={movie.title} />
+                                <img src={movie.poster_url} className="card-img-top inline" width="250" height="400" alt={movie.title} />
+                               
                                 <div className="card-body">
                                     <h5 className="card-title">{movie.title}</h5>
                                     <p className="card-text">{movie.description}</p>
